@@ -116,7 +116,7 @@ switch ($_SERVER["REQUEST_METHOD"]) {
 
     case "GET":
 
-        if ($_GET["brand_id"]) {
+        if (array_key_exists('brand_id', $_GET) && $_GET["brand_id"]) {
             $brand_id = $_GET["brand_id"];
             $sql = "SELECT Category.id, Category.name, Category.logo
                     FROM Category

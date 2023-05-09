@@ -115,7 +115,7 @@ switch ($_SERVER["REQUEST_METHOD"]) {
         break;
 
     case "GET":
-        if ($_GET["category_id"]) {
+        if (array_key_exists('category_id', $_GET) && $_GET["category_id"]) {
             $category_id = $_GET["category_id"];
             $sql = "SELECT Brand.id, Brand.name, Brand.logo
             FROM Brand
@@ -123,7 +123,7 @@ switch ($_SERVER["REQUEST_METHOD"]) {
             WHERE Product.category_id = $category_id
             GROUP BY Brand.id";
         }
-        print_r(SQLite3::version());
+
         $result = $conn->query($sql);
         $response = new Response();
         if ($result->num_rows == 0) {

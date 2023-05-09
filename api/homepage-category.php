@@ -33,7 +33,7 @@ if ($result->num_rows == 0) {
 
 function get_product(\mysqli $conn, $offset, $limit, $condition)
 {
-    $sql_proudct = "SELECT Product.id, Product.type, Product.sku, Product.name, Product.short_descr, Product.descr, Product.in_stock, Product.event_text, Product.event_color, Product.sale_price, Product.regular_price, Product.images, Product.is_disable, Product.position, Product.parent, Attribute.name as 'attribute_name', Attribute.value as 'attribute_value', Category.id as 'category_id', Category.name as 'category_name', Category.logo as 'category_logo', Brand.id as 'brand_id', Brand.name as 'brand_name', Brand.logo as 'breand_logo'
+    $sql_proudct = "SELECT Product.id, Product.type, Product.sku, Product.name, Product.short_descr, Product.descr, Product.in_stock, Product.event_text, Product.event_color, Product.sale_price, Product.regular_price, Product.images, Product.is_disable, Product.position, Product.parent, Attribute.name as 'attribute_name', Attribute.value as 'attribute_value', Category.id as 'category_id', Category.name as 'category_name', Category.logo as 'category_logo', Brand.id as 'brand_id', Brand.name as 'brand_name', Brand.logo as 'brand_logo'
                 FROM Product
                 LEFT JOIN Category ON Product.category_id = Category.id
                 LEFT JOIN Brand ON Product.brand_id = Brand.id
@@ -84,7 +84,7 @@ function get_product(\mysqli $conn, $offset, $limit, $condition)
             array_push($products, $product);
         }
 
-        $sql_variation_proudct = "SELECT Product.id, Product.type, Product.sku, Product.name, Product.short_descr, Product.descr, Product.in_stock, Product.event_text, Product.event_color, Product.sale_price, Product.regular_price, Product.images, Product.is_disable, Product.position, Product.parent, Attribute.name as 'attribute_name', Attribute.value as 'attribute_value', Category.id as 'category_id', Category.name as 'category_name', Category.logo as 'category_logo', Brand.id as 'brand_id', Brand.name as 'brand_name', Brand.logo as 'breand_logo'
+        $sql_variation_product = "SELECT Product.id, Product.type, Product.sku, Product.name, Product.short_descr, Product.descr, Product.in_stock, Product.event_text, Product.event_color, Product.sale_price, Product.regular_price, Product.images, Product.is_disable, Product.position, Product.parent, Attribute.name as 'attribute_name', Attribute.value as 'attribute_value', Category.id as 'category_id', Category.name as 'category_name', Category.logo as 'category_logo', Brand.id as 'brand_id', Brand.name as 'brand_name', Brand.logo as 'brand_logo'
                     FROM Product
                     LEFT JOIN Category ON Product.category_id = Category.id
                     LEFT JOIN Brand ON Product.brand_id = Brand.id
@@ -92,11 +92,11 @@ function get_product(\mysqli $conn, $offset, $limit, $condition)
                     LEFT JOIN Attribute ON Product_Attribute.attribute_id = Attribute.id
                     WHERE Product.published = TRUE AND Product.type='variation' AND Product.parent IN" . prepare_variation_id($variation_id);
 
-        $result_variation = $conn->query($sql_variation_proudct);
+        $result_variation = $conn->query($sql_variation_product);
         // $conn->close();
 
         $varition_products = array();
-        if ($result_variation->num_rows > 0) {
+        if ($result_variation && $result_variation->num_rows > 0) {
             while ($row = $result_variation->fetch_assoc()) {
                 $varition_product = new Product();
                 $varition_product->id = (int)$row["id"];
