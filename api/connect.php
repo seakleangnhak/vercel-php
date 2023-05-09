@@ -1,5 +1,5 @@
 <?php
-include '../model/response.php';
+include 'model/response.php';
 
 // Allow from any origin
 if (isset($_SERVER['HTTP_ORIGIN'])) {

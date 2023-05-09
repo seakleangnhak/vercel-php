@@ -1,6 +1,6 @@
 <?php
-include '../model/product.php';
-include '../model/pagination.php';
+include 'model/product.php';
+include 'model/pagination.php';
 include_once('connect.php');
 
 $product_id;
@@ -23,13 +23,13 @@ switch ($_SERVER["REQUEST_METHOD"]) {
             $response = new Response();
 
             if ($status) {
-                $event_text = str_replace("'","\\'", $data->event_text);
+                $event_text = str_replace("'", "\\'", $data->event_text);
                 $event_text = empty($event_text) ? "null" : "'$event_text'";
-                $event_color = str_replace("'","\\'", $data->event_color);
+                $event_color = str_replace("'", "\\'", $data->event_color);
                 $event_color = empty($event_color) ? "null" : "'$event_color'";
-                
+
                 $sql_product = "INSERT INTO Product (type, sku, name, published, short_descr, descr, in_stock, is_disable, event_text, event_color, sale_price, regular_price, images, parent, position, category_id, brand_id) 
-                VALUES ('" . $data->type . "', null,'" . str_replace("'","\\'", $data->name) . "'," . $data->published . ", null ,'" . str_replace("'","\\'", $data->descr) . "'," . $data->in_stock . "," . $data->is_disable . "," . $event_text . "," . $event_color . ", null," . $data->regular_price . ",'" . $file_name . "', null," . $data->position . "," . $data->category_id . "," . $data->brand_id . ")";
+                VALUES ('" . $data->type . "', null,'" . str_replace("'", "\\'", $data->name) . "'," . $data->published . ", null ,'" . str_replace("'", "\\'", $data->descr) . "'," . $data->in_stock . "," . $data->is_disable . "," . $event_text . "," . $event_color . ", null," . $data->regular_price . ",'" . $file_name . "', null," . $data->position . "," . $data->category_id . "," . $data->brand_id . ")";
 
                 if ($conn->query($sql_product) !== FALSE) {
                     // $product_id = $conn->insert_id;
@@ -62,14 +62,14 @@ switch ($_SERVER["REQUEST_METHOD"]) {
 
         if ($data->name) {
             $need_comma = true;
-            $sql = $sql . "name = '" . str_replace("'","\\'", $data->name) . "'";
+            $sql = $sql . "name = '" . str_replace("'", "\\'", $data->name) . "'";
         }
         if ($data->descr) {
             if ($need_comma) {
                 $sql = $sql . ", ";
             }
             $need_comma = true;
-            $sql = $sql . "descr = '" . str_replace("'","\\'", $data->descr) . "'";
+            $sql = $sql . "descr = '" . str_replace("'", "\\'", $data->descr) . "'";
         }
         if ($data->regular_price) {
             if ($need_comma) {
@@ -97,7 +97,7 @@ switch ($_SERVER["REQUEST_METHOD"]) {
                 $sql = $sql . ", ";
             }
             $need_comma = true;
-            $sql = $sql . "event_text = '" . str_replace("'","\\'", $data->event_text) . "'";
+            $sql = $sql . "event_text = '" . str_replace("'", "\\'", $data->event_text) . "'";
         } else if ($data->event_text == "") {
             if ($need_comma) {
                 $sql = $sql . ", ";
@@ -110,7 +110,7 @@ switch ($_SERVER["REQUEST_METHOD"]) {
                 $sql = $sql . ", ";
             }
             $need_comma = true;
-            $sql = $sql . "event_color = '" . str_replace("'","\\'", $data->event_color) . "'";
+            $sql = $sql . "event_color = '" . str_replace("'", "\\'", $data->event_color) . "'";
         } else if ($data->event_color == "") {
             if ($need_comma) {
                 $sql = $sql . ", ";
@@ -167,7 +167,7 @@ switch ($_SERVER["REQUEST_METHOD"]) {
         $page = 1;
         $limit = 15;
         $condition = "";
-        
+
         if (isset($product_id)) {
             $condition = "AND Product.id = $product_id";
 
@@ -193,12 +193,12 @@ switch ($_SERVER["REQUEST_METHOD"]) {
             if (isset($_GET["brand_id"])) {
                 $condition .= " AND Brand.id = " . $_GET["brand_id"];
             }
-            
+
             if (isset($_GET["is_disable"])) {
                 $condition .= " AND Product.is_disable = " . (int)$_GET["is_disable"];
             }
 
-	        if (isset($_GET["product_name"])) {
+            if (isset($_GET["product_name"])) {
                 $condition .= " AND Product.name LIKE '%" . $_GET["product_name"] . "%'";
             }
 
@@ -209,7 +209,7 @@ switch ($_SERVER["REQUEST_METHOD"]) {
                 LEFT JOIN Product_Attribute ON Product.id = Product_Attribute.product_id
                 LEFT JOIN Attribute ON Product_Attribute.attribute_id = Attribute.id
                 WHERE Product.published = TRUE AND NOT Product.type='variation' $condition";
-            
+
             $count_result = $conn->query($sql_count);
             $total_rows = (int)$count_result->fetch_array()[0];
             $total_pages = ceil($total_rows / $limit);
@@ -237,10 +237,10 @@ switch ($_SERVER["REQUEST_METHOD"]) {
             $response->message = "id is required";
             die($response->to_json());
         }
-        
+
         $sql = "DELETE FROM Product_Attribute WHERE product_id = $product_id";
         $conn->query($sql);
-        
+
         $sql = "DELETE FROM Product WHERE id = $product_id";
         if ($conn->query($sql) === FALSE) {
             $response->code = 400;
@@ -254,7 +254,7 @@ switch ($_SERVER["REQUEST_METHOD"]) {
 
 function get_product(\mysqli $conn, $offset, $limit, $condition)
 {
-    global $_GET; 
+    global $_GET;
     $sql_proudct = "SELECT Product.id, Product.type, Product.sku, Product.name, Product.short_descr, Product.event_text, Product.event_color, Product.descr, Product.sale_price, Product.regular_price, Product.images, Product.is_disable, Product.in_stock, Product.position, Product.parent, Attribute.name as 'attribute_name', Attribute.value as 'attribute_value', Category.id as 'category_id', Category.name as 'category_name', Category.logo as 'category_logo', Brand.id as 'brand_id', Brand.name as 'brand_name', Brand.logo as 'brand_logo'
                 FROM Product
                 LEFT JOIN Category ON Product.category_id = Category.id
@@ -266,7 +266,7 @@ function get_product(\mysqli $conn, $offset, $limit, $condition)
     if ($offset !== null && $limit !== null) {
         $sql_proudct = $sql_proudct . " LIMIT $offset, $limit";
     }
-    
+
     $result = $conn->query($sql_proudct);
 
     $products = array();
@@ -313,11 +313,11 @@ function get_product(\mysqli $conn, $offset, $limit, $condition)
                     LEFT JOIN Product_Attribute ON Product.id = Product_Attribute.product_id
                     LEFT JOIN Attribute ON Product_Attribute.attribute_id = Attribute.id
                     WHERE Product.published = TRUE AND Product.type='variation' AND Product.parent IN" . prepare_variation_id($variation_id);
-                    
+
         if (isset($_GET["is_disable"])) {
             $sql_variation_proudct .= " AND Product.is_disable = " . $_GET["is_disable"];
         }
-        
+
         $result_variation = $conn->query($sql_variation_proudct);
         $conn->close();
 

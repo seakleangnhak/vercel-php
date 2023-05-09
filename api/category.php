@@ -1,5 +1,5 @@
 <?php
-include '../model/category.php';
+include 'model/category.php';
 
 include_once('connect.php');
 
@@ -86,7 +86,7 @@ switch ($_SERVER["REQUEST_METHOD"]) {
             $upload_dir = UPLOAD_DIR . $file_name;
             $status = file_put_contents($upload_dir, $image_base64);
             if ($status) {
-                if($data->name) {
+                if ($data->name) {
                     $sql = $sql . ", ";
                 }
                 $sql = $sql . "logo = '" . $file_name . "' ";

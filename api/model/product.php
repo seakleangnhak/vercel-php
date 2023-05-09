@@ -7,6 +7,7 @@ class Product
     public $sku;
     public $short_descr;
     public $descr;
+    public $in_stock;
     public $event_text;
     public $event_color;
     public $sale_price;

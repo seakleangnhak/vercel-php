@@ -1,12 +1,12 @@
 <?php
-include '../model/product.php';
-include '../model/category.php';
+include 'model/product.php';
+include 'model/category.php';
 include_once('connect.php');
 
 if ($_SERVER["REQUEST_METHOD"] != "GET") {
     $response = new Response();
     die($response->to_json());
-} 
+}
 
 // get all category
 $sql = "SELECT * FROM Category";
@@ -21,7 +21,7 @@ if ($result->num_rows == 0) {
         $category->id = (int)$data["id"];
         $category->name = empty($data["name"]) ? null : $data["name"];
         $category->logo = empty($data["logo"]) ? null : $data["logo"];
-        
+
         $condition = "AND Category.id = " . $category->id . " AND Product.is_disable = 0";
         $category->products = get_product($conn, 0, 10, $condition);
 
@@ -44,7 +44,7 @@ function get_product(\mysqli $conn, $offset, $limit, $condition)
     if ($offset !== null && $limit !== null) {
         $sql_proudct = $sql_proudct . " LIMIT $offset, $limit";
     }
-    
+
     $result = $conn->query($sql_proudct);
 
     $products = array();
@@ -83,7 +83,7 @@ function get_product(\mysqli $conn, $offset, $limit, $condition)
 
             array_push($products, $product);
         }
-        
+
         $sql_variation_proudct = "SELECT Product.id, Product.type, Product.sku, Product.name, Product.short_descr, Product.descr, Product.in_stock, Product.event_text, Product.event_color, Product.sale_price, Product.regular_price, Product.images, Product.is_disable, Product.position, Product.parent, Attribute.name as 'attribute_name', Attribute.value as 'attribute_value', Category.id as 'category_id', Category.name as 'category_name', Category.logo as 'category_logo', Brand.id as 'brand_id', Brand.name as 'brand_name', Brand.logo as 'breand_logo'
                     FROM Product
                     LEFT JOIN Category ON Product.category_id = Category.id
@@ -91,7 +91,7 @@ function get_product(\mysqli $conn, $offset, $limit, $condition)
                     LEFT JOIN Product_Attribute ON Product.id = Product_Attribute.product_id
                     LEFT JOIN Attribute ON Product_Attribute.attribute_id = Attribute.id
                     WHERE Product.published = TRUE AND Product.type='variation' AND Product.parent IN" . prepare_variation_id($variation_id);
-                    
+
         $result_variation = $conn->query($sql_variation_proudct);
         // $conn->close();
 

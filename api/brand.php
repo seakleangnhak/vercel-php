@@ -1,5 +1,5 @@
 <?php
-include '../model/brand.php';
+include 'model/brand.php';
 
 include_once('connect.php');
 

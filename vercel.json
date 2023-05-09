@@ -13,7 +13,12 @@
     "build": {
         "config": {
             "includeFiles": [
-                "api/connect.php"
+                "api/connect.php",
+                "api/model/brand.php",
+                "api/model/category.php",
+                "api/model/pagination.php",
+                "api/model/product.php",
+                "api/model/response.php"
             ]
         },
         "env": {
