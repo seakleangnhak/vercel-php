@@ -1,12 +1,7 @@
 {
     "functions": {
         "api/**/*.php": {
-            "runtime": "vercel-php@0.6.0",
-            "config": {
-                "includeFiles": [
-                    "api/connect.php"
-                ]
-            }
+            "runtime": "vercel-php@0.6.0"
         }
     },
     "routes": [
@@ -16,6 +11,11 @@
         }
     ],
     "build": {
+        "config": {
+            "includeFiles": [
+                "api/connect.php"
+            ]
+        },
         "env": {
             "NOW_PHP_DEBUG": "1"
         }

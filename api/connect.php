@@ -31,10 +31,10 @@ $header = getallheaders();
 // $password = "*MigratioN#06";
 // $dbname = "u399807655_flutter_db";
 
-$servername = "localhost";
-$dbname = "d20719985_botracomputer";
-$username = "id20719985_admin";
-$password = "NhAkSLsl^^98";
+$servername = "sql625.main-hosting.eu";
+$dbname = "u399807655_flutter_db";
+$username = "u399807655_flutter_db";
+$password = "*MigratioN#06";
 
 
 // Create connection
